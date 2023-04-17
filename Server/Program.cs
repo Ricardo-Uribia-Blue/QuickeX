@@ -26,13 +26,13 @@ builder.Services.AddDbContext<QuickEx.Server.Data.QuickPruebaContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("QuickPruebaConnection"));
 });
+builder.Services.AddScoped<QuickEx.Client.QuickPruebaService>();
 builder.Services.AddControllers().AddOData(opt =>
 {
     var oDataBuilderQuickPrueba = new ODataConventionModelBuilder();
     oDataBuilderQuickPrueba.EntitySet<QuickEx.Server.Models.QuickPrueba.Alumno>("Alumnos");
     opt.AddRouteComponents("odata/QuickPrueba", oDataBuilderQuickPrueba.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
 });
-builder.Services.AddScoped<QuickEx.Client.QuickPruebaService>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
