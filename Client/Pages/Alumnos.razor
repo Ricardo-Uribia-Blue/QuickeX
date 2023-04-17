@@ -1,0 +1,85 @@
+@page "/alumnos"
+
+<PageTitle>Alumnos</PageTitle>
+<RadzenStack>
+<RadzenRow AlignItems="AlignItems.Center">
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenText Text="Alumnos" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+    </RadzenColumn>
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton Icon="add_circle_outline" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+        </RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
+<RadzenRow>
+    <RadzenColumn SizeMD=6>
+    <RadzenCard style="height: 100%">
+        <RadzenDataGrid @ref="grid0" ColumnWidth="200px"  AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" ShowPagingSummary="true" PageSizeOptions=@(new int[]{5, 10, 20, 30})
+            Data="@alumnos" Count=count LoadData=@Grid0LoadData  TItem="QuickEx.Server.Models.QuickPrueba.Alumno" RowSelect="@EditRow" >
+            <Columns>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Alumno" Property="dni" Title="dni">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Alumno" Property="nombre" Title="nombre">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Alumno" Property="Primer_parcial" Title="Primerparcial">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Alumno" Property="Segundo_parcial" Title="Segundoparcial">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Alumno" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="alumno">
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                            Shade="Shade.Lighter" Variant="Variant.Flat"
+                            Click=@(args => GridDeleteButtonClick(args, alumno)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenCard>
+    </RadzenColumn>
+        <RadzenColumn SizeMD=6>
+        <RadzenCard style="height: 100%;margin-top:0px;">
+            <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@errorVisible">Cannot save Alumno</RadzenAlert>
+            <RadzenTemplateForm TItem="QuickEx.Server.Models.QuickPrueba.Alumno" Data="@alumno" Visible="@(alumno != null)" Submit="@FormSubmit">
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="dni" Component="dni" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenTextBox style="display: block; width: 100%" @bind-Value="@alumno.dni" Name="dni" />
+                        <RadzenRequiredValidator Component="dni" Text="dni is required" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="nombre" Component="nombre" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenTextBox style="display: block; width: 100%" @bind-Value="@alumno.nombre" Name="nombre" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="Primerparcial" Component="Primer_parcial" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenNumeric style="display: block; width: 100%" @bind-Value="@alumno.Primer_parcial" Name="Primer_parcial" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="Segundoparcial" Component="Segundo_parcial" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenNumeric style="display: block; width: 100%" @bind-Value="@alumno.Segundo_parcial" Name="Segundo_parcial" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save" Variant="Variant.Flat" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Variant="Variant.Flat" Click="@CancelButtonClick" Visible=false />
+                </RadzenStack>
+            </RadzenTemplateForm>
+        </RadzenCard>
+        </RadzenColumn></RadzenRow>
+</RadzenStack>
