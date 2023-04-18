@@ -6,12 +6,25 @@
 
 <RadzenLayout style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body';">
     <RadzenHeader>
-        <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="0">
-            <RadzenColumn Size="5">
+        <RadzenRow JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Start" Gap=0rem>
+            <RadzenColumn Size="11">
                 <RadzenSidebarToggle Click="@SidebarToggleClick"></RadzenSidebarToggle>
             </RadzenColumn>
-            <RadzenColumn Size="7">
-                <RadzenStack AlignItems="AlignItems.Center" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End"></RadzenStack>
+            <RadzenColumn Size="1">
+                        <RadzenProfileMenu>
+                            <Template>
+                                <RadzenImage Path="images/user.png" Style="width: 4rem;" Text="ricardo.uribia@blueoceantech.com.mx">
+                                </RadzenImage>
+                                <RadzenText>ricardo.uribia@blueoceantech.com.mx</RadzenText>
+                            </Template>
+                            <ChildContent>
+                                <RadzenProfileMenuItem Text="Buttons" Path="buttons" Icon="account_circle"></RadzenProfileMenuItem>
+                                <RadzenProfileMenuItem Text="Menu" Path="menu" Icon="line_weight"></RadzenProfileMenuItem>
+                                <RadzenProfileMenuItem Text="FileInput" Path="fileinput" Icon="attach_file"></RadzenProfileMenuItem>
+                                <RadzenProfileMenuItem Text="Dialog" Path="dialog" Icon="perm_media"></RadzenProfileMenuItem>
+                                <RadzenProfileMenuItem Text="log out" Path="Login" Icon="input"></RadzenProfileMenuItem>
+                            </ChildContent>
+                        </RadzenProfileMenu>
             </RadzenColumn>
         </RadzenRow>
     </RadzenHeader>
@@ -24,7 +37,7 @@
     </RadzenBody>
     <RadzenSidebar Expanded="@sidebarExpanded" style="z-index: 2">
         <RadzenStack AlignItems="Radzen.AlignItems.Center" class="rz-py-4 rz-py-lg-6" Style="padding: var(--rz-panel-menu-item-padding); border-bottom: var(--rz-panel-menu-item-border);">
-            <RadzenImage Path="images/logo.png"  style="width: 48px; height: 48px;"></RadzenImage>
+            <RadzenImage  style="width: 48px; height: 48px;" Path="images\logoquickex.png"></RadzenImage>
             <RadzenText Text="QuickEx" TextStyle="Radzen.Blazor.TextStyle.Subtitle1" class="rz-mb-0" style="color: var(--rz-primary-light);" />
         </RadzenStack>
         <RadzenPanelMenu>

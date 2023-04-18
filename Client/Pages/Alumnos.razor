@@ -8,7 +8,7 @@
     </RadzenColumn>
     <RadzenColumn Size="12" SizeMD="6">
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
-            <RadzenButton Icon="add_circle_outline" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+            <RadzenButton Icon="add" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
         </RadzenStack>
     </RadzenColumn>
 </RadzenRow>
@@ -28,7 +28,9 @@
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Alumno" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
                     <Template Context="alumno">
-
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary" Icon="build" Size="ButtonSize.Medium"
+                         Shade="Shade.Lighter" Variant="Variant.Flat"/>
+                            
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
                             Shade="Shade.Lighter" Variant="Variant.Flat"
                             Click=@(args => GridDeleteButtonClick(args, alumno)) @onclick:stopPropagation="true" />
@@ -78,7 +80,7 @@
                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
                         <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save" Variant="Variant.Flat" 
                         Click=@(args => ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro guardado", Duration = 4000 })) />
-                        <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Variant="Variant.Flat" Click="@CancelButtonClick" Visible=false />
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Variant="Variant.Flat" Click="@CancelButtonClick" Visible=true />
                 </RadzenStack>
             </RadzenTemplateForm>
         </RadzenCard>
