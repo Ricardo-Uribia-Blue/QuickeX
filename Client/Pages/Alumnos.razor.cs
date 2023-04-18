@@ -97,7 +97,8 @@ namespace QuickEx.Client.Pages
             try
             {
                 dynamic result = isEdit ? await QuickPruebaService.UpdateAlumno(dni:alumno.dni, alumno) : await QuickPruebaService.CreateAlumno(alumno);
-
+                 await grid0.Reload();
+                 alumno = new QuickEx.Server.Models.QuickPrueba.Alumno();
             }
             catch (Exception ex)
             {

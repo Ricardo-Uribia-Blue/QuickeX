@@ -49,7 +49,7 @@ namespace QuickEx.Server
 
         public async Task<IQueryable<QuickEx.Server.Models.QuickPrueba.Alumno>> GetAlumnos(Query query = null)
         {
-            var items = Context.Alumnos.AsQueryable();
+            var items = Context.Alumnos.OrderBy(i => i.dni).AsQueryable();
 
 
             if (query != null)

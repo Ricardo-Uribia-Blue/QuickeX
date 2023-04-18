@@ -76,10 +76,25 @@
                     </RadzenColumn>
                 </RadzenRow>
                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
-                        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save" Variant="Variant.Flat" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save" Variant="Variant.Flat" 
+                        Click=@(args => ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro guardado", Duration = 4000 })) />
                         <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Variant="Variant.Flat" Click="@CancelButtonClick" Visible=false />
                 </RadzenStack>
             </RadzenTemplateForm>
         </RadzenCard>
         </RadzenColumn></RadzenRow>
 </RadzenStack>
+
+
+@code {
+
+   void ShowNotification(NotificationMessage message)
+   {
+      NotificationService.Notify(message);
+
+   }
+
+   void NotificationClick(NotificationMessage message)
+   {
+   }
+}
