@@ -1,0 +1,119 @@
+@page "/usuarios"
+
+<PageTitle>Usuarios</PageTitle>
+<RadzenStack>
+<RadzenRow AlignItems="AlignItems.Center">
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenText Text="Usuarios" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+    </RadzenColumn>
+    <RadzenColumn Size="12" SizeMD="6">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton Icon="add_circle_outline" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+        </RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
+<RadzenRow>
+    <RadzenColumn SizeMD=6>
+    <RadzenCard style="height: 100%">
+        <RadzenDataGrid @ref="grid0" ColumnWidth="200px"  AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" ShowPagingSummary="true" PageSizeOptions=@(new int[]{5, 10, 20, 30})
+            Data="@usuarios" Count=count LoadData=@Grid0LoadData  TItem="QuickEx.Server.Models.QuickPrueba.Usuario" RowSelect="@EditRow" >
+            <Columns>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Usuario" Property="IdUsuario" Title="Id Usuario">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Usuario" Property="nombre" Title="nombre">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Usuario" Property="cargo" Title="cargo">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Usuario" Property="email" Title="email">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Usuario" Property="telefonoMovil" Title="telefono Movil">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Usuario" Property="telefonoEmpresa" Title="telefono Empresa">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="QuickEx.Server.Models.QuickPrueba.Usuario" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="usuario">
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                            Shade="Shade.Lighter" Variant="Variant.Flat"
+                            Click=@(args => GridDeleteButtonClick(args, usuario)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenCard>
+    </RadzenColumn>
+        <RadzenColumn SizeMD=6>
+        <RadzenCard style="height: 100%;margin-top:0px;">
+            <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@errorVisible">Cannot save Usuario</RadzenAlert>
+            <RadzenTemplateForm TItem="QuickEx.Server.Models.QuickPrueba.Usuario" Data="@usuario" Visible="@(usuario != null)" Submit="@FormSubmit">
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="Id Usuario" Component="IdUsuario" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenNumeric style="display: block; width: 100%" @bind-Value="@usuario.IdUsuario" Name="IdUsuario" />
+                        <RadzenRequiredValidator Component="IdUsuario" Text="IdUsuario is required" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="nombre" Component="nombre" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenTextBox style="display: block; width: 100%" @bind-Value="@usuario.nombre" Name="nombre" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="cargo" Component="cargo" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenTextBox style="display: block; width: 100%" @bind-Value="@usuario.cargo" Name="cargo" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="email" Component="email" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenTextBox style="display: block; width: 100%" @bind-Value="@usuario.email" Name="email" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="telefono Movil" Component="telefonoMovil" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenNumeric style="display: block; width: 100%" @bind-Value="@usuario.telefonoMovil" Name="telefonoMovil" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow style="margin-bottom: 1rem">
+                    <RadzenColumn SizeMD="3">
+                        <RadzenLabel Text="telefono Empresa" Component="telefonoEmpresa" style="width: 100%" />
+                    </RadzenColumn>
+                    <RadzenColumn SizeMD="9">
+                        <RadzenNumeric style="display: block; width: 100%" @bind-Value="@usuario.telefonoEmpresa" Name="telefonoEmpresa" />
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="Save" Variant="Variant.Flat"
+                        Click=@(args => ShowNotification(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Registro guardado", Duration = 4000 })) />
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancel" Variant="Variant.Flat" Click="@CancelButtonClick" Visible=true />
+                </RadzenStack>
+            </RadzenTemplateForm>
+        </RadzenCard>
+        </RadzenColumn></RadzenRow>
+</RadzenStack>
+
+@code {
+
+   void ShowNotification(NotificationMessage message)
+   {
+      NotificationService.Notify(message);
+
+   }
+
+   void NotificationClick(NotificationMessage message)
+   {
+   }
+}

@@ -16,12 +16,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace QuickEx.Server.Controllers.QuickPrueba
 {
-    [Route("odata/QuickPrueba/Alumnos")]
-    public partial class AlumnosController : ODataController
+    [Route("odata/QuickPrueba/Usuarios")]
+    public partial class UsuariosController : ODataController
     {
         private QuickEx.Server.Data.QuickPruebaContext context;
 
-        public AlumnosController(QuickEx.Server.Data.QuickPruebaContext context)
+        public UsuariosController(QuickEx.Server.Data.QuickPruebaContext context)
         {
             this.context = context;
         }
@@ -29,34 +29,34 @@ namespace QuickEx.Server.Controllers.QuickPrueba
     
         [HttpGet]
         [EnableQuery(MaxExpansionDepth=10,MaxAnyAllExpressionDepth=10,MaxNodeCount=1000)]
-        public IEnumerable<QuickEx.Server.Models.QuickPrueba.Alumno> GetAlumnos()
+        public IEnumerable<QuickEx.Server.Models.QuickPrueba.Usuario> GetUsuarios()
         {
-            var items = this.context.Alumnos.AsQueryable<QuickEx.Server.Models.QuickPrueba.Alumno>();
-            this.OnAlumnosRead(ref items);
+            var items = this.context.Usuarios.AsQueryable<QuickEx.Server.Models.QuickPrueba.Usuario>();
+            this.OnUsuariosRead(ref items);
 
             return items;
         }
 
-        partial void OnAlumnosRead(ref IQueryable<QuickEx.Server.Models.QuickPrueba.Alumno> items);
+        partial void OnUsuariosRead(ref IQueryable<QuickEx.Server.Models.QuickPrueba.Usuario> items);
 
-        partial void OnAlumnoGet(ref SingleResult<QuickEx.Server.Models.QuickPrueba.Alumno> item);
+        partial void OnUsuarioGet(ref SingleResult<QuickEx.Server.Models.QuickPrueba.Usuario> item);
 
         [EnableQuery(MaxExpansionDepth=10,MaxAnyAllExpressionDepth=10,MaxNodeCount=1000)]
-        [HttpGet("/odata/QuickPrueba/Alumnos(dni={dni})")]
-        public SingleResult<QuickEx.Server.Models.QuickPrueba.Alumno> GetAlumno(long key)
+        [HttpGet("/odata/QuickPrueba/Usuarios(IdUsuario={IdUsuario})")]
+        public SingleResult<QuickEx.Server.Models.QuickPrueba.Usuario> GetUsuario(long key)
         {
-            var items = this.context.Alumnos.Where(i => i.dni == key);
+            var items = this.context.Usuarios.Where(i => i.IdUsuario == key);
             var result = SingleResult.Create(items);
 
-            OnAlumnoGet(ref result);
+            OnUsuarioGet(ref result);
 
             return result;
         }
-        partial void OnAlumnoDeleted(QuickEx.Server.Models.QuickPrueba.Alumno item);
-        partial void OnAfterAlumnoDeleted(QuickEx.Server.Models.QuickPrueba.Alumno item);
+        partial void OnUsuarioDeleted(QuickEx.Server.Models.QuickPrueba.Usuario item);
+        partial void OnAfterUsuarioDeleted(QuickEx.Server.Models.QuickPrueba.Usuario item);
 
-        [HttpDelete("/odata/QuickPrueba/Alumnos(dni={dni})")]
-        public IActionResult DeleteAlumno(long key)
+        [HttpDelete("/odata/QuickPrueba/Usuarios(IdUsuario={IdUsuario})")]
+        public IActionResult DeleteUsuario(long key)
         {
             try
             {
@@ -66,11 +66,11 @@ namespace QuickEx.Server.Controllers.QuickPrueba
                 }
 
 
-                var items = this.context.Alumnos
-                    .Where(i => i.dni == key)
+                var items = this.context.Usuarios
+                    .Where(i => i.IdUsuario == key)
                     .AsQueryable();
 
-                items = Data.EntityPatch.ApplyTo<QuickEx.Server.Models.QuickPrueba.Alumno>(Request, items);
+                items = Data.EntityPatch.ApplyTo<QuickEx.Server.Models.QuickPrueba.Usuario>(Request, items);
 
                 var item = items.FirstOrDefault();
 
@@ -78,10 +78,10 @@ namespace QuickEx.Server.Controllers.QuickPrueba
                 {
                     return StatusCode((int)HttpStatusCode.PreconditionFailed);
                 }
-                this.OnAlumnoDeleted(item);
-                this.context.Alumnos.Remove(item);
+                this.OnUsuarioDeleted(item);
+                this.context.Usuarios.Remove(item);
                 this.context.SaveChanges();
-                this.OnAfterAlumnoDeleted(item);
+                this.OnAfterUsuarioDeleted(item);
 
                 return new NoContentResult();
 
@@ -93,12 +93,12 @@ namespace QuickEx.Server.Controllers.QuickPrueba
             }
         }
 
-        partial void OnAlumnoUpdated(QuickEx.Server.Models.QuickPrueba.Alumno item);
-        partial void OnAfterAlumnoUpdated(QuickEx.Server.Models.QuickPrueba.Alumno item);
+        partial void OnUsuarioUpdated(QuickEx.Server.Models.QuickPrueba.Usuario item);
+        partial void OnAfterUsuarioUpdated(QuickEx.Server.Models.QuickPrueba.Usuario item);
 
-        [HttpPut("/odata/QuickPrueba/Alumnos(dni={dni})")]
+        [HttpPut("/odata/QuickPrueba/Usuarios(IdUsuario={IdUsuario})")]
         [EnableQuery(MaxExpansionDepth=10,MaxAnyAllExpressionDepth=10,MaxNodeCount=1000)]
-        public IActionResult PutAlumno(long key, [FromBody]QuickEx.Server.Models.QuickPrueba.Alumno item)
+        public IActionResult PutUsuario(long key, [FromBody]QuickEx.Server.Models.QuickPrueba.Usuario item)
         {
             try
             {
@@ -107,11 +107,11 @@ namespace QuickEx.Server.Controllers.QuickPrueba
                     return BadRequest(ModelState);
                 }
 
-                var items = this.context.Alumnos
-                    .Where(i => i.dni == key)
+                var items = this.context.Usuarios
+                    .Where(i => i.IdUsuario == key)
                     .AsQueryable();
 
-                items = Data.EntityPatch.ApplyTo<QuickEx.Server.Models.QuickPrueba.Alumno>(Request, items);
+                items = Data.EntityPatch.ApplyTo<QuickEx.Server.Models.QuickPrueba.Usuario>(Request, items);
 
                 var firstItem = items.FirstOrDefault();
 
@@ -119,13 +119,13 @@ namespace QuickEx.Server.Controllers.QuickPrueba
                 {
                     return StatusCode((int)HttpStatusCode.PreconditionFailed);
                 }
-                this.OnAlumnoUpdated(item);
-                this.context.Alumnos.Update(item);
+                this.OnUsuarioUpdated(item);
+                this.context.Usuarios.Update(item);
                 this.context.SaveChanges();
 
-                var itemToReturn = this.context.Alumnos.Where(i => i.dni == key);
+                var itemToReturn = this.context.Usuarios.Where(i => i.IdUsuario == key);
                 ;
-                this.OnAfterAlumnoUpdated(item);
+                this.OnAfterUsuarioUpdated(item);
                 return new ObjectResult(SingleResult.Create(itemToReturn));
             }
             catch(Exception ex)
@@ -135,9 +135,9 @@ namespace QuickEx.Server.Controllers.QuickPrueba
             }
         }
 
-        [HttpPatch("/odata/QuickPrueba/Alumnos(dni={dni})")]
+        [HttpPatch("/odata/QuickPrueba/Usuarios(IdUsuario={IdUsuario})")]
         [EnableQuery(MaxExpansionDepth=10,MaxAnyAllExpressionDepth=10,MaxNodeCount=1000)]
-        public IActionResult PatchAlumno(long key, [FromBody]Delta<QuickEx.Server.Models.QuickPrueba.Alumno> patch)
+        public IActionResult PatchUsuario(long key, [FromBody]Delta<QuickEx.Server.Models.QuickPrueba.Usuario> patch)
         {
             try
             {
@@ -146,11 +146,11 @@ namespace QuickEx.Server.Controllers.QuickPrueba
                     return BadRequest(ModelState);
                 }
 
-                var items = this.context.Alumnos
-                    .Where(i => i.dni == key)
+                var items = this.context.Usuarios
+                    .Where(i => i.IdUsuario == key)
                     .AsQueryable();
 
-                items = Data.EntityPatch.ApplyTo<QuickEx.Server.Models.QuickPrueba.Alumno>(Request, items);
+                items = Data.EntityPatch.ApplyTo<QuickEx.Server.Models.QuickPrueba.Usuario>(Request, items);
 
                 var item = items.FirstOrDefault();
 
@@ -160,11 +160,11 @@ namespace QuickEx.Server.Controllers.QuickPrueba
                 }
                 patch.Patch(item);
 
-                this.OnAlumnoUpdated(item);
-                this.context.Alumnos.Update(item);
+                this.OnUsuarioUpdated(item);
+                this.context.Usuarios.Update(item);
                 this.context.SaveChanges();
 
-                var itemToReturn = this.context.Alumnos.Where(i => i.dni == key);
+                var itemToReturn = this.context.Usuarios.Where(i => i.IdUsuario == key);
                 ;
                 return new ObjectResult(SingleResult.Create(itemToReturn));
             }
@@ -175,12 +175,12 @@ namespace QuickEx.Server.Controllers.QuickPrueba
             }
         }
 
-        partial void OnAlumnoCreated(QuickEx.Server.Models.QuickPrueba.Alumno item);
-        partial void OnAfterAlumnoCreated(QuickEx.Server.Models.QuickPrueba.Alumno item);
+        partial void OnUsuarioCreated(QuickEx.Server.Models.QuickPrueba.Usuario item);
+        partial void OnAfterUsuarioCreated(QuickEx.Server.Models.QuickPrueba.Usuario item);
 
         [HttpPost]
         [EnableQuery(MaxExpansionDepth=10,MaxAnyAllExpressionDepth=10,MaxNodeCount=1000)]
-        public IActionResult Post([FromBody] QuickEx.Server.Models.QuickPrueba.Alumno item)
+        public IActionResult Post([FromBody] QuickEx.Server.Models.QuickPrueba.Usuario item)
         {
             try
             {
@@ -194,15 +194,15 @@ namespace QuickEx.Server.Controllers.QuickPrueba
                     return BadRequest();
                 }
 
-                this.OnAlumnoCreated(item);
-                this.context.Alumnos.Add(item);
+                this.OnUsuarioCreated(item);
+                this.context.Usuarios.Add(item);
                 this.context.SaveChanges();
 
-                var itemToReturn = this.context.Alumnos.Where(i => i.dni == item.dni);
+                var itemToReturn = this.context.Usuarios.Where(i => i.IdUsuario == item.IdUsuario);
 
                 ;
 
-                this.OnAfterAlumnoCreated(item);
+                this.OnAfterUsuarioCreated(item);
 
                 return new ObjectResult(SingleResult.Create(itemToReturn))
                 {

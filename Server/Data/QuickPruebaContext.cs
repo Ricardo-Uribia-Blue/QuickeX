@@ -26,5 +26,7 @@ namespace QuickEx.Server.Data
         }
 
         public DbSet<QuickEx.Server.Models.QuickPrueba.Alumno> Alumnos { get; set; }
+
+        public DbSet<QuickEx.Server.Models.QuickPrueba.Usuario> Usuarios { get; set; }
     }
 }

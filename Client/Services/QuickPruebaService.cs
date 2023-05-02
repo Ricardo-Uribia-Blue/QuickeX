@@ -81,9 +81,9 @@ namespace QuickEx.Client
 
         partial void OnDeleteAlumno(HttpRequestMessage requestMessage);
 
-        public async Task<HttpResponseMessage> DeleteAlumno(string dni = default(string))
+        public async Task<HttpResponseMessage> DeleteAlumno(long dni = default(long))
         {
-            var uri = new Uri(baseUri, $"Alumnos('{HttpUtility.UrlEncode(dni.Trim().Replace("'", "''").Replace(" ","%20"))}')");
+            var uri = new Uri(baseUri, $"Alumnos({dni})");
 
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
 
@@ -94,9 +94,9 @@ namespace QuickEx.Client
 
         partial void OnGetAlumnoByDni(HttpRequestMessage requestMessage);
 
-        public async Task<QuickEx.Server.Models.QuickPrueba.Alumno> GetAlumnoByDni(string expand = default(string), string dni = default(string))
+        public async Task<QuickEx.Server.Models.QuickPrueba.Alumno> GetAlumnoByDni(string expand = default(string), long dni = default(long))
         {
-            var uri = new Uri(baseUri, $"Alumnos('{HttpUtility.UrlEncode(dni.Trim().Replace("'", "''").Replace(" ","%20"))}')");
+            var uri = new Uri(baseUri, $"Alumnos({dni})");
 
             uri = Radzen.ODataExtensions.GetODataUri(uri: uri, filter:null, top:null, skip:null, orderby:null, expand:expand, select:null, count:null);
 
@@ -111,16 +111,112 @@ namespace QuickEx.Client
 
         partial void OnUpdateAlumno(HttpRequestMessage requestMessage);
         
-        public async Task<HttpResponseMessage> UpdateAlumno(string dni = default(string), QuickEx.Server.Models.QuickPrueba.Alumno alumno = default(QuickEx.Server.Models.QuickPrueba.Alumno))
+        public async Task<HttpResponseMessage> UpdateAlumno(long dni = default(long), QuickEx.Server.Models.QuickPrueba.Alumno alumno = default(QuickEx.Server.Models.QuickPrueba.Alumno))
         {
-            var uri = new Uri(baseUri, $"Alumnos('{HttpUtility.UrlEncode(dni.Trim().Replace("'", "''").Replace(" ","%20"))}')");
+            var uri = new Uri(baseUri, $"Alumnos({dni})");
 
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Patch, uri);
 
+            httpRequestMessage.Headers.Add("If-Match", alumno.ETag);    
 
             httpRequestMessage.Content = new StringContent(Radzen.ODataJsonSerializer.Serialize(alumno), Encoding.UTF8, "application/json");
 
             OnUpdateAlumno(httpRequestMessage);
+
+            return await httpClient.SendAsync(httpRequestMessage);
+        }
+
+        public async System.Threading.Tasks.Task ExportUsuariosToExcel(Query query = null, string fileName = null)
+        {
+            navigationManager.NavigateTo(query != null ? query.ToUrl($"export/quickprueba/usuarios/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/quickprueba/usuarios/excel(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
+        }
+
+        public async System.Threading.Tasks.Task ExportUsuariosToCSV(Query query = null, string fileName = null)
+        {
+            navigationManager.NavigateTo(query != null ? query.ToUrl($"export/quickprueba/usuarios/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')") : $"export/quickprueba/usuarios/csv(fileName='{(!string.IsNullOrEmpty(fileName) ? UrlEncoder.Default.Encode(fileName) : "Export")}')", true);
+        }
+
+        partial void OnGetUsuarios(HttpRequestMessage requestMessage);
+
+        public async Task<Radzen.ODataServiceResult<QuickEx.Server.Models.QuickPrueba.Usuario>> GetUsuarios(Query query)
+        {
+            return await GetUsuarios(filter:$"{query.Filter}", orderby:$"{query.OrderBy}", top:query.Top, skip:query.Skip, count:query.Top != null && query.Skip != null);
+        }
+
+        public async Task<Radzen.ODataServiceResult<QuickEx.Server.Models.QuickPrueba.Usuario>> GetUsuarios(string filter = default(string), string orderby = default(string), string expand = default(string), int? top = default(int?), int? skip = default(int?), bool? count = default(bool?), string format = default(string), string select = default(string))
+        {
+            var uri = new Uri(baseUri, $"Usuarios");
+            uri = Radzen.ODataExtensions.GetODataUri(uri: uri, filter:filter, top:top, skip:skip, orderby:orderby, expand:expand, select:select, count:count);
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+
+            OnGetUsuarios(httpRequestMessage);
+
+            var response = await httpClient.SendAsync(httpRequestMessage);
+
+            return await Radzen.HttpResponseMessageExtensions.ReadAsync<Radzen.ODataServiceResult<QuickEx.Server.Models.QuickPrueba.Usuario>>(response);
+        }
+
+        partial void OnCreateUsuario(HttpRequestMessage requestMessage);
+
+        public async Task<QuickEx.Server.Models.QuickPrueba.Usuario> CreateUsuario(QuickEx.Server.Models.QuickPrueba.Usuario usuario = default(QuickEx.Server.Models.QuickPrueba.Usuario))
+        {
+            var uri = new Uri(baseUri, $"Usuarios");
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
+
+            httpRequestMessage.Content = new StringContent(Radzen.ODataJsonSerializer.Serialize(usuario), Encoding.UTF8, "application/json");
+
+            OnCreateUsuario(httpRequestMessage);
+
+            var response = await httpClient.SendAsync(httpRequestMessage);
+
+            return await Radzen.HttpResponseMessageExtensions.ReadAsync<QuickEx.Server.Models.QuickPrueba.Usuario>(response);
+        }
+
+        partial void OnDeleteUsuario(HttpRequestMessage requestMessage);
+
+        public async Task<HttpResponseMessage> DeleteUsuario(long idUsuario = default(long))
+        {
+            var uri = new Uri(baseUri, $"Usuarios({idUsuario})");
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
+
+            OnDeleteUsuario(httpRequestMessage);
+
+            return await httpClient.SendAsync(httpRequestMessage);
+        }
+
+        partial void OnGetUsuarioByIdUsuario(HttpRequestMessage requestMessage);
+
+        public async Task<QuickEx.Server.Models.QuickPrueba.Usuario> GetUsuarioByIdUsuario(string expand = default(string), long idUsuario = default(long))
+        {
+            var uri = new Uri(baseUri, $"Usuarios({idUsuario})");
+
+            uri = Radzen.ODataExtensions.GetODataUri(uri: uri, filter:null, top:null, skip:null, orderby:null, expand:expand, select:null, count:null);
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+
+            OnGetUsuarioByIdUsuario(httpRequestMessage);
+
+            var response = await httpClient.SendAsync(httpRequestMessage);
+
+            return await Radzen.HttpResponseMessageExtensions.ReadAsync<QuickEx.Server.Models.QuickPrueba.Usuario>(response);
+        }
+
+        partial void OnUpdateUsuario(HttpRequestMessage requestMessage);
+        
+        public async Task<HttpResponseMessage> UpdateUsuario(long idUsuario = default(long), QuickEx.Server.Models.QuickPrueba.Usuario usuario = default(QuickEx.Server.Models.QuickPrueba.Usuario))
+        {
+            var uri = new Uri(baseUri, $"Usuarios({idUsuario})");
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Patch, uri);
+
+            httpRequestMessage.Headers.Add("If-Match", usuario.ETag);    
+
+            httpRequestMessage.Content = new StringContent(Radzen.ODataJsonSerializer.Serialize(usuario), Encoding.UTF8, "application/json");
+
+            OnUpdateUsuario(httpRequestMessage);
 
             return await httpClient.SendAsync(httpRequestMessage);
         }

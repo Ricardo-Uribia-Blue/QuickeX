@@ -7,8 +7,8 @@ using System.Text.Json.Serialization;
 
 namespace QuickEx.Server.Models.QuickPrueba
 {
-    [Table("alumnos")]
-    public partial class Alumno
+    [Table("usuarios")]
+    public partial class Usuario
     {
 
         [NotMapped]
@@ -22,16 +22,22 @@ namespace QuickEx.Server.Models.QuickPrueba
 
         [Key]
         [Required]
-        public long dni { get; set; }
+        public long IdUsuario { get; set; }
 
         [ConcurrencyCheck]
         public string nombre { get; set; }
 
         [ConcurrencyCheck]
-        public double? Primer_parcial { get; set; }
+        public string cargo { get; set; }
 
         [ConcurrencyCheck]
-        public double? Segundo_parcial { get; set; }
+        public string email { get; set; }
+
+        [ConcurrencyCheck]
+        public long? telefonoMovil { get; set; }
+
+        [ConcurrencyCheck]
+        public long? telefonoEmpresa { get; set; }
 
     }
 }

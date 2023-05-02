@@ -31,6 +31,7 @@ builder.Services.AddControllers().AddOData(opt =>
 {
     var oDataBuilderQuickPrueba = new ODataConventionModelBuilder();
     oDataBuilderQuickPrueba.EntitySet<QuickEx.Server.Models.QuickPrueba.Alumno>("Alumnos");
+    oDataBuilderQuickPrueba.EntitySet<QuickEx.Server.Models.QuickPrueba.Usuario>("Usuarios");
     opt.AddRouteComponents("odata/QuickPrueba", oDataBuilderQuickPrueba.GetEdmModel()).Count().Filter().OrderBy().Expand().Select().SetMaxTop(null).TimeZone = TimeZoneInfo.Utc;
 });
 var app = builder.Build();
